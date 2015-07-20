@@ -86,7 +86,7 @@ import qualified Language.Haskell.TH.Syntax     as TH
 
 import           System.Process
   (runInteractiveProcess, terminateProcess, waitForProcess)
-                                                
+
 import           System.FilePath
 import           System.IO
 import           System.IO.Error
@@ -241,7 +241,7 @@ thrunnerPackage = stringToPackageKey "thrunner"
 
 getThRunner :: GhcjsEnv -> HscEnv -> DynFlags -> Module -> IO ThRunner
 getThRunner js_env hsc_env dflags m = do
-  let m' = moduleNameString (moduleName m)
+  let m' = "DUPA"
   modifyMVar (thRunners js_env) $ \runners -> case M.lookup m' runners of
     Just r  -> return (runners, r)
     Nothing -> do

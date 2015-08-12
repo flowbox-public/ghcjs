@@ -299,7 +299,7 @@ ghcjsiLoadInitialCode' rs code = do
   ghcjsiSendToRunner rs 0 code
   ghcjsiReadFromRunner rs
   return ()
-  
+
 ghcjsiLoadCode :: RunnerState -> ByteString -> IO ()
 ghcjsiLoadCode rs code = do
   rl <- takeMVar (runnerRtsLoaded rs)
@@ -429,7 +429,7 @@ declareCapture dflags m ids = pe (mconcat $ runGen dflags m emptyUFM (mapM d ids
   where
     d  = fmap decl . jsIdI
     pe = TL.encodeUtf8 . (<> TL.pack "\n") . displayT . renderPretty 0.8 150 . pretty
-         
+
 
 {-
   rewrite: let x = y in z ->
@@ -602,14 +602,14 @@ handleRunStatus step expr bindings final_ids
              , resumeSpan = span, resumeHistory = toListBL history
              , resumeHistoryIx = 0 }
            hsc_env2 = pushResume hsc_env1 resume
-  
+
          modifySession (\_ -> hsc_env2)
          return (RunBreak tid names mb_info)
-  
+
     -- Completed with an exception
     | Complete (Left e) <- status
     = return (RunException e)
-  
+
     -- Completed successfully
     | Complete (Right hvals) <- status
     = do hsc_env <- getSession
@@ -619,7 +619,7 @@ handleRunStatus step expr bindings final_ids
          hsc_env' <- liftIO $ rttiEnvironment hsc_env{hsc_IC=final_ic}
          modifySession (\_ -> hsc_env')
          return (RunOk final_names)
-  
+
     | otherwise
     = panic "handleRunStatus"  -- The above cases are in fact exhaustive
 
@@ -1258,7 +1258,7 @@ greToRdrNames GRE{ gre_name = name, gre_prov = prov }
 -- the identifier can refer to in the current interactive context.
 parseName :: GhcMonad m => String -> m [Name]
 parseName str = withSession $ \hsc_env -> do
-   (L _ rdr_name) <- liftIO $ hscParseIdentifier hsc_env str
+   rdr_name <- liftIO $ hscParseIdentifier hsc_env str
    liftIO $ hscTcRnLookupRdrName hsc_env rdr_name
 
 -- -----------------------------------------------------------------------------
@@ -1379,7 +1379,7 @@ hscDeclsWithLocation js_settings js_env rs hsc_env0 str source linenumber =
 
     let src_span = srcLocSpan interactiveSrcLoc
     bs <- liftIO $ ghcjsCompileInteractiveCoreBinds js_env js_settings rs hsc_env src_span prepd_binds []
- 
+
     let tcs = filterOut isImplicitTyCon (mg_tcs simpl_mg)
         patsyns = mg_patsyns simpl_mg
 
